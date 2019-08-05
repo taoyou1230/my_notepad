@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NotePad</class>
+ <widget class="QMainWindow" name="NotePad">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>记事本</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_F">
+    <property name="title">
+     <string>文件(F)</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="separator"/>
+    <addaction name="actionPageSet"/>
+    <addaction name="actionPrint"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menu_E">
+    <property name="title">
+     <string>编辑(E)</string>
+    </property>
+    <addaction name="actionRevoke"/>
+    <addaction name="separator"/>
+    <addaction name="actionShear"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionDelete"/>
+    <addaction name="separator"/>
+    <addaction name="actionFind"/>
+    <addaction name="actionFindNext"/>
+    <addaction name="actionReplace"/>
+    <addaction name="actionGoto"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelectAll"/>
+    <addaction name="actionTimeOrDate"/>
+   </widget>
+   <widget class="QMenu" name="menu_O">
+    <property name="title">
+     <string>格式(O)</string>
+    </property>
+    <addaction name="actionWrapText"/>
+    <addaction name="actionTypeface"/>
+   </widget>
+   <widget class="QMenu" name="menu_V">
+    <property name="title">
+     <string>查看(V)</string>
+    </property>
+    <addaction name="actionStatusBar"/>
+   </widget>
+   <widget class="QMenu" name="menu_H">
+    <property name="title">
+     <string>帮助(H)</string>
+    </property>
+    <addaction name="actionViewHelp"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menu_F"/>
+   <addaction name="menu_E"/>
+   <addaction name="menu_O"/>
+   <addaction name="menu_V"/>
+   <addaction name="menu_H"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionNew">
+   <property name="text">
+    <string>新建(N)</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>打开(O)...</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>保存(S)</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>另存为(A)...</string>
+   </property>
+  </action>
+  <action name="actionPageSet">
+   <property name="text">
+    <string>网页设置(U)...</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="text">
+    <string>打印(P)...</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>退出(X)</string>
+   </property>
+  </action>
+  <action name="actionRevoke">
+   <property name="text">
+    <string>撤销(U)</string>
+   </property>
+  </action>
+  <action name="actionShear">
+   <property name="text">
+    <string>剪切(T)</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>复制(C)</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="text">
+    <string>粘贴(P)</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>删除(L)</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="text">
+    <string>查找(F)...</string>
+   </property>
+  </action>
+  <action name="actionFindNext">
+   <property name="text">
+    <string>查找下一个(N)</string>
+   </property>
+  </action>
+  <action name="actionReplace">
+   <property name="text">
+    <string>替换(R)...</string>
+   </property>
+  </action>
+  <action name="actionGoto">
+   <property name="text">
+    <string>转到(G)...</string>
+   </property>
+  </action>
+  <action name="actionSelectAll">
+   <property name="text">
+    <string>全选(A)</string>
+   </property>
+  </action>
+  <action name="actionTimeOrDate">
+   <property name="text">
+    <string>时间日期(D)</string>
+   </property>
+  </action>
+  <action name="actionWrapText">
+   <property name="text">
+    <string>自动换行(W)</string>
+   </property>
+  </action>
+  <action name="actionTypeface">
+   <property name="text">
+    <string>字体(F)...</string>
+   </property>
+  </action>
+  <action name="actionStatusBar">
+   <property name="text">
+    <string>状态栏(S)</string>
+   </property>
+  </action>
+  <action name="actionViewHelp">
+   <property name="text">
+    <string>查看帮助(H)</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>关于记事本(A)</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
