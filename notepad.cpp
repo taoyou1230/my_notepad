@@ -6,6 +6,11 @@ NotePad::NotePad(QWidget *parent) :
     ui(new Ui::NotePad)
 {
     ui->setupUi(this);
+
+    lblStatus = new QLabel();
+    lblStatus->setAlignment(Qt::AlignRight);
+    statusBar()->addPermanentWidget(lblStatus);
+
     init();
 }
 
@@ -47,6 +52,19 @@ void NotePad::init(){
     /*帮助*/
     connect(ui->actionViewHelp,SIGNAL(triggered(bool)),this,SLOT(slotViewHelp()));
     connect(ui->actionAbout,SIGNAL(triggered(bool)),this,SLOT(slotAbout()));
+
+    /*文本框监听*/
+    connect(ui->textEdit,SIGNAL(undoAvailable(bool)),this,SLOT(slotUndoAvailable(bool)));
+    connect(ui->textEdit,SIGNAL(copyAvailable(bool)),this,SLOT(slotCopyAvailable(bool)));
+    connect(ui->textEdit,SIGNAL(cursorPositionChanged()),this,SLOT(slotCursorPositionChanged()));
+    connect(ui->textEdit,SIGNAL(redoAvailable(bool)),this,SLOT(slotRedoAvailable(bool)));
+    connect(ui->textEdit,SIGNAL(selectionChanged()),this,SLOT(slotSelectionChanged()));
+    connect(ui->textEdit,SIGNAL(textChanged()),this,SLOT(slotTextChanged()));
+
+    //设置action初始状态
+    setActionState();
+    //加载设置
+    loadSettings();
 
 }
 /**
@@ -134,19 +152,49 @@ void NotePad::slotDelete(){
 }
 //查找
 void NotePad::slotFind(){
-    ui->textEdit->find();
+    if (replaceDialog != Q_NULLPTR && replaceDialog->isVisible())
+    {
+        replaceDialog->activateWindow();
+        return;
+    }
+
+    if (searchDialog == Q_NULLPTR)
+        searchDialog = new SearchDialog(this, ui->textEdit);
+    searchDialog->show();
+    searchDialog->activateWindow();
 }
 //查找下一个
 void NotePad::slotFindNext(){
-
+    if (searchDialog == Q_NULLPTR)
+        searchDialog = new SearchDialog(this, ui->textEdit);
+    searchDialog->search();
 }
 //替换
 void NotePad::slotReplace(){
+    if (searchDialog != Q_NULLPTR && searchDialog->isVisible())
+    {
+        searchDialog->activateWindow();
+        return;
+    }
 
+    if (replaceDialog == Q_NULLPTR)
+        replaceDialog = new ReplaceDialog(this, ui->textEdit);
+    replaceDialog->show();
+    replaceDialog->activateWindow();
 }
 //转到
 void NotePad::slotGoto(){
-
+    //跳转...传this以此做为其窗主，Modal状态标题栏闪烁
+    GotoDialog gotoDialog(this);
+    gotoDialog.setLineNumber(ui->textEdit->textCursor().blockNumber() + 1, ui->textEdit->document()->lineCount());
+    if (gotoDialog.exec() == QDialog::Accepted)
+    {
+        int line = gotoDialog.gotoLine;
+        QTextCursor cursor = ui->textEdit->textCursor();
+        int position = ui->textEdit->document()->findBlockByNumber(line - 1).position();
+        cursor.setPosition(position, QTextCursor::MoveAnchor);
+        ui->textEdit->setTextCursor(cursor);
+    }
 }
 //全选
 void NotePad::slotSelectAll(){
@@ -170,7 +218,8 @@ void NotePad::slotTypeface(){
 /*查看*/
 //状态栏
 void NotePad::slotStatusBar(){
-
+    this->statusChecked = ui->actionStatusBar->isChecked();
+    ui->statusBar->setVisible(ui->actionStatusBar->isChecked());
 }
 
 /*帮助*/
@@ -182,6 +231,47 @@ void NotePad::slotViewHelp(){
 void NotePad::slotAbout(){
 
 }
+//
+void NotePad::slotCopyAvailable(bool enabled)
+{
+    ui->actionCopy->setEnabled(enabled);
+}
+//
+void NotePad::slotCursorPositionChanged()
+{
+    QTextCursor tc = ui->textEdit->textCursor();
+    QString info = tr("第%1行，第%2列  ").arg(tc.blockNumber() + 1).arg(tc.columnNumber());
+    lblStatus->setText(info);
+}
+//
+void NotePad::slotRedoAvailable(bool enabled)
+{
+}
+//
+void NotePad::slotSelectionChanged()
+{
+    QString selecdedText = ui->textEdit->textCursor().selectedText();
+    //ui.actUndo
+    ui->actionCopy->setEnabled(!selecdedText.isEmpty());
+    ui->actionPaste->setEnabled(!selecdedText.isEmpty());
+    ui->actionDelete->setEnabled(!selecdedText.isEmpty());
+}
+//
+void NotePad::slotTextChanged()
+{
+    slotSelectionChanged();
+
+    QString text = ui->textEdit->toPlainText();
+    ui->actionFind->setEnabled(text != "");
+    ui->actionFindNext->setEnabled(text != "");
+    ui->actionGoto->setEnabled(text != "" && !ui->actionWrapText->isChecked());
+}
+//
+void NotePad::slotUndoAvailable(bool enabled)
+{
+    ui->actionRevoke->setEnabled(enabled);
+}
+
 
 /**
  * 保存文件
@@ -289,4 +379,68 @@ bool NotePad::confirmSave()
     default:
         return true;
     }
+}
+
+/**
+ * 设置action显示启用状态
+ * @brief NotePad::setActionState
+ */
+void NotePad::setActionState()
+{
+    ui->actionRevoke->setEnabled(false);
+    ui->actionCopy->setEnabled(false);
+    ui->actionPaste->setEnabled(false);
+    ui->actionDelete->setEnabled(false);
+    ui->actionFind->setEnabled(false);
+    ui->actionFindNext->setEnabled(false);
+    ui->actionGoto->setEnabled(false);
+}
+
+/**
+ * 初始化文本框样式
+ * @brief NotePad::initTextEdifUI
+ */
+void NotePad::initTextEdifUI()
+{
+    QPalette palette = ui->textEdit->palette();
+    palette.setColor(QPalette::Highlight, Qt::darkGreen);
+    palette.setColor(QPalette::HighlightedText, Qt::white);
+    ui->textEdit->setPalette(palette);
+
+    ui->textEdit->setAcceptDrops(false);
+    setAcceptDrops(true);
+}
+
+/**
+ * 加载设置
+ * @brief NotePad::loadSettings
+ */
+void NotePad::loadSettings()
+{
+    //大小&位置
+    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Notepad", QSettings::NativeFormat);
+    int x = settings.value("iWindowPosX", 0).toInt();
+    int y = settings.value("iWindowPosY", 0).toInt();
+    int w = settings.value("iWindowPosDX", 800).toInt();
+    int h = settings.value("iWindowPosDY", 600).toInt();
+    this->setGeometry(x, y, w, h);
+    ui->actionWrapText->setChecked(settings.value("fWrap", true).toBool());
+    ui->actionStatusBar->setChecked(settings.value("StatusBar", true).toBool());
+    ui->statusBar->setVisible(ui->actionStatusBar->isChecked());
+}
+
+/**
+ * 保存设置
+ * @brief NotePad::saveSettings
+ */
+void NotePad::saveSettings()
+{
+    //大小&位置
+    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Notepad", QSettings::NativeFormat);
+    settings.setValue("iWindowPosX", this->x());
+    settings.setValue("iWindowPosY", this->y());
+    settings.setValue("iWindowPosDX", this->width());
+    settings.setValue("iWindowPosDY", this->height());
+    settings.setValue("fWrap", ui->actionWrapText->isChecked());
+    settings.setValue("StatusBar", ui->actionStatusBar->isChecked());
 }

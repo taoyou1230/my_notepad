@@ -11,6 +11,10 @@
 #include <QDebug>
 #include <replace/replacedialog.h>
 #include <search/searchdialog.h>
+#include <goto/gotodialog.h>
+#include <QTextBlock>
+#include <QLabel>
+#include <QSettings>
 
 namespace Ui {
 class NotePad;
@@ -87,12 +91,12 @@ public slots:
     void slotAbout();
 
     /******文本框******/
-//    void slotCopyAvailable(bool);
-//    void slotCursorPositionChanged();
-//    void slotRedoAvailable(bool);
-//    void slotSelectionChanged();
-//    void slotTextChanged();
-//    void slotUndoAvailable(bool);
+    void slotCopyAvailable(bool);
+    void slotCursorPositionChanged();
+    void slotRedoAvailable(bool);
+    void slotSelectionChanged();
+    void slotTextChanged();
+    void slotUndoAvailable(bool);
 
 private:
     Ui::NotePad *ui;
@@ -100,8 +104,18 @@ private:
     QString lastDir;
     SearchDialog *searchDialog = Q_NULLPTR;
     ReplaceDialog *replaceDialog = Q_NULLPTR;
+    bool statusChecked = true;
+    QLabel *lblStatus;
     //初始化
     void init();
+    //设置action状态
+    void setActionState();
+    //初始化文本框样式
+    void initTextEdifUI();
+    //加载设置
+    void loadSettings();
+    //保存设置
+    void saveSettings();
     //保存文件
     bool saveFile();
     //保存文件

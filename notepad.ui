@@ -202,6 +202,12 @@
    </property>
   </action>
   <action name="actionWrapText">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>自动换行(W)</string>
    </property>
@@ -212,6 +218,12 @@
    </property>
   </action>
   <action name="actionStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>状态栏(S)</string>
    </property>

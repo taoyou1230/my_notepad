@@ -36,7 +36,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="lblReplace">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -49,7 +49,7 @@
     <string>替换为(P):</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit_2">
+  <widget class="QLineEdit" name="replaceEdit">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -59,7 +59,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="searchButton">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -72,7 +72,7 @@
     <string>查找下一个(F)</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="replaceButton">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -85,7 +85,7 @@
     <string>替换(R)</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="replaceAllButton">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -98,7 +98,7 @@
     <string>全部替换(A)</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_4">
+  <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -111,7 +111,7 @@
     <string>取消</string>
    </property>
   </widget>
-  <widget class="QRadioButton" name="radioButton">
+  <widget class="QRadioButton" name="cbCaseSensitive">
    <property name="geometry">
     <rect>
      <x>10</x>
