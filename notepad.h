@@ -2,6 +2,15 @@
 #define NOTEPAD_H
 
 #include <QMainWindow>
+#include <QFileInfo>
+#include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QDir>
+#include <QDebug>
+#include <replace/replacedialog.h>
+#include <search/searchdialog.h>
 
 namespace Ui {
 class NotePad;
@@ -16,6 +25,8 @@ public:
     ~NotePad();
     //加载文件
     void loadFromFile(QString fileName);
+
+
 
 public slots:
     /******菜单项******/
@@ -85,7 +96,22 @@ public slots:
 
 private:
     Ui::NotePad *ui;
+    QString fileName;
+    QString lastDir;
+    SearchDialog *searchDialog = Q_NULLPTR;
+    ReplaceDialog *replaceDialog = Q_NULLPTR;
+    //初始化
     void init();
+    //保存文件
+    bool saveFile();
+    //保存文件
+    bool saveFile(QString fileName);
+    //另存文件
+    bool saveFileAs();
+    //设置文件名
+    void setFileName(QString fileName);
+    //确认保存
+    bool confirmSave();
 };
 
 #endif // NOTEPAD_H

@@ -13,8 +13,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        notepad.cpp
+        notepad.cpp \
+    search/searchdialog.cpp \
+    replace/replacedialog.cpp \
+    goto/gotodialog.cpp
 
-HEADERS  += notepad.h
+HEADERS  += notepad.h \
+    search/searchdialog.h \
+    replace/replacedialog.h \
+    goto/gotodialog.h
 
-FORMS    += notepad.ui
+FORMS    += notepad.ui \
+    search/searchdialog.ui \
+    replace/replacedialog.ui \
+    goto/gotodialog.ui
