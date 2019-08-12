@@ -31,7 +31,12 @@ FORMS    += notepad.ui \
 
 DESTDIR = ../bin
 
-RC_ICONS = image/logo.ico
+# 第一种显示图标方式
+#RC_ICONS = image/logo.ico
+#RESOURCES += \
+#    source.qrc
 
-RESOURCES += \
-    source.qrc
+# 第二种显示图标方式
+DISTFILES += \
+    exelogo.rc
+RC_FILE += exelogo.rc
