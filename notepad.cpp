@@ -115,11 +115,26 @@ void NotePad::slotSaveAs(){
 }
 //页面设置
 void NotePad::slotPageSet(){
-    QMessageBox::critical(this, tr("提示"), tr("抱歉，请等待后续开发！"), tr("关闭"));
+    QPrinter printer;
+    QPageSetupDialog pageSetUpdlg(&printer, this);
+    if (pageSetUpdlg.exec() == QDialog::Accepted)
+        printer.setOrientation(QPrinter::Landscape);
+    else
+        printer.setOrientation(QPrinter::Portrait);
 }
 //打印
 void NotePad::slotPrint(){
-    QMessageBox::critical(this, tr("提示"), tr("抱歉，请等待后续开发！"), tr("关闭"));
+    QPrinter printer;
+    QString printerName = printer.printerName();
+    if (printerName.size() == 0)
+        return;
+
+    QPrintDialog dlg(&printer, this);
+    if (ui->textEdit->textCursor().hasSelection())
+        dlg.addEnabledOption(QAbstractPrintDialog::PrintSelection);
+    // 如果在对话框中按下了打印按钮，则执行打印操作
+    if (dlg.exec() == QDialog::Accepted)
+        ui->textEdit->print(&printer);
 }
 //退出
 void NotePad::slotExit(){
@@ -198,21 +213,41 @@ void NotePad::slotGoto(){
 }
 //全选
 void NotePad::slotSelectAll(){
-
+    ui->textEdit->selectAll();
 }
 //时间/日期
 void NotePad::slotTimeOrDate(){
-
+    QString dateTime = QDateTime::currentDateTime().toString(Qt::SystemLocaleDate);
+    ui->textEdit->textCursor().insertText(dateTime);
 }
 
 /*格式*/
 //自行换行
 void NotePad::slotWrapText(){
+    if (ui->actionWrapText->isChecked())
+        ui->textEdit->setWordWrapMode(QTextOption::WordWrap);
+    else
+        ui->textEdit->setWordWrapMode(QTextOption::NoWrap);
 
+    ui->actionGoto->setEnabled(!ui->actionWrapText->isChecked());
+    ui->actionStatusBar->setEnabled(!ui->actionWrapText->isChecked());
+    if (ui->actionWrapText->isChecked())
+    {
+        if (ui->actionStatusBar->isChecked())
+        {
+            ui->actionStatusBar->setChecked(false);
+            ui->statusBar->setVisible(ui->actionStatusBar->isChecked());
+        }
+    }
+    else if (this->statusChecked)
+        ui->actionStatusBar->trigger();
 }
 //字体
 void NotePad::slotTypeface(){
-
+    bool ok;
+    QFont font = QFontDialog::getFont(&ok, ui->textEdit->font());
+    if (ok)
+        ui->textEdit->setFont(font);
 }
 
 /*查看*/
@@ -225,11 +260,13 @@ void NotePad::slotStatusBar(){
 /*帮助*/
 //查看帮助
 void NotePad::slotViewHelp(){
-
+    QMessageBox::warning(this, tr("提示"), tr("黔驴技穷，搞不定[IHxHelpPane->(\"mshelp://windows/?id=e725b43f-94e4-4410-98e7-cc87ab2739aa\")]"), tr("确定"));
 }
 //关于记事本
 void NotePad::slotAbout(){
-
+    QString appPath = QApplication::applicationFilePath();
+    HICON icon = ExtractIcon(NULL, appPath.toStdWString().c_str(), 0);
+    ShellAbout((HWND)this->winId(), tr("Qt记事本").toStdWString().c_str(), tr("作者：陶友").toStdWString().c_str(), icon);
 }
 //
 void NotePad::slotCopyAvailable(bool enabled)

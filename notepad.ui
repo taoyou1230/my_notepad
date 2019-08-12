@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>记事本</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../qt_notepad/NotePad.ico</normaloff>../qt_notepad/NotePad.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
@@ -37,6 +41,9 @@
         <width>100</width>
         <height>0</height>
        </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
       </property>
      </widget>
     </item>

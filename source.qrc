@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/start-up.png</file>
+        <file>image/exelogo.ico</file>
+        <file>image/logo.ico</file>
+    </qresource>
+</RCC>

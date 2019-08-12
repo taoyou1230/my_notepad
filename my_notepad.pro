@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,3 +27,11 @@ FORMS    += notepad.ui \
     search/searchdialog.ui \
     replace/replacedialog.ui \
     goto/gotodialog.ui
+
+
+DESTDIR = ../bin
+
+RC_ICONS = image/logo.ico
+
+RESOURCES += \
+    source.qrc

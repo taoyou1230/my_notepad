@@ -15,7 +15,12 @@
 #include <QTextBlock>
 #include <QLabel>
 #include <QSettings>
-
+#include <QFontDialog>
+#include <QDateTime>
+#include <windows.h>
+#include <QPrinter>
+#include <QPageSetupDialog>
+#include <QPrintDialog>
 namespace Ui {
 class NotePad;
 }
